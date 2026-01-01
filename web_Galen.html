@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>高磊 | 北京大学新材料学院</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    /* 根据浏览器大小自动调整高度 */
+    html, body {
+        height: 100%;
+    } 
+    * {
+        margin: 0;
+        padding: 0;
+    }  
+    /* ---------- 通用 ---------- */
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:"PingFang SC","Microsoft YaHei",sans-serif;background:#f5f5f5;color:#333;line-height:1.6;}
+
+    /* ---------- 顶部栏 ---------- */
+    .m_header_box{position:relative;height:120px;overflow:hidden;}
+    .m_header_box{position:sticky;top:0;overflow:hidden;z-index: 999;} /*起到置顶窗格固定的效果*/
+    .head_bg{position:absolute;inset:0;background:#9B0000;}
+    #m_header{position:relative;z-index:2;display:flex;align-items:center;height:100%;padding:0 40px;}
+    #logo{position:relative;z-index:10;}
+    #logo img{height:50px;}
+    .m_nav_btn{margin-left:auto;width:44px;height:32px;display:flex;flex-direction:column;justify-content:space-between;padding:6px;cursor:pointer;z-index:10;}
+    .m_nav_btn span{display:block;height:3px;background:#fff;border-radius:2px;transition:.3s;}
+
+    /* 抽屉导航 */
+    .m_nav{position:absolute;top:100%;left:0;width:100%;max-height:0;overflow:hidden;transition:max-height .4s ease;background:rgba(0,0,0,.65);color:#fff;}
+    .m_nav.open{max-height:600px;}
+    .m_nav .close{text-align:right;font-size:28px;padding:10px 20px;cursor:pointer;}
+    .m_nav_list{list-style:none;margin:0;padding:0 20px 20px;}
+    .m_nav_list .title{border-bottom:1px solid rgba(255,255,255,.15);}
+    .m_nav_list .title > a{display:flex;justify-content:space-between;align-items:center;padding:12px 0;color:#fff;text-decoration:none;}
+    .m_nav_list .title h3{font-size:16px;font-weight:500;margin:0;}
+    .m_nav_list .title i{width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:6px solid #fff;transition:transform .3s;}
+    .m_nav_list .title.active i{transform:rotate(180deg);}
+    .m_nav_list .list{max-height:0;overflow:hidden;transition:max-height .3s ease;padding-left:1em;}
+    .m_nav_list .title.active .list{max-height:300px;}
+    .m_nav_list .list a{display:block;padding:8px 0;font-size:14px;color:#ddd;text-decoration:none;}
+    .m_nav_list .list a:hover{color:#fff;}
+
+    /* ---------- 主体卡片 ---------- */
+    .ej_sznr{max-width:1000px;margin:40px auto;padding:0 20px;}
+    .sznr_box1{display:flex;gap:40px;align-items:flex-start;padding:40px;border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,.08);background:url("Galen/bg-深圳.jpg") center/cover no-repeat;position:relative;overflow:hidden;}
+    .sznr_box1 .img{flex-shrink:0;max-width:200px;}
+    .sznr_box1 .img img{display:block;width:100%;height:auto;}
+    .sznr_box1 .bt{font-size:32px;font-weight:500;color:#fff;margin-bottom:20px;}
+    .sznr_box1 .xx>div{display:flex;margin-bottom:12px;font-size:16px;}
+    .sznr_box1 .xx strong{width:100px;color:#fff;font-weight:400;}
+    .sznr_box1 .xx p{flex:1;color:#fff;}
+
+    /* ---------- 内容区 ---------- */
+    .sznr_box2{background:#fff;padding:40px;border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,.08);}
+    .sec{margin-bottom:45px;}
+    .sec:last-child{margin-bottom:0;}
+    .sznr_box2 h2{font-size:26px;font-weight:500;color:#9b0000;padding-left:12px;border-left:4px solid #9b0000;background:#f5f5f5;margin-bottom:18px;}
+    .indent{text-indent:2em;line-height:1.8;}
+    .list,.honor,.papers{list-style:none;padding-left:2em;line-height:1.8;}
+    .list li,.papers li{position:relative;padding-left:1.4em;}
+    .list li::before{content:"";position:absolute;left:0;top:.5em;width:6px;height:6px;background:#9b0000;border-radius:50%;}
+    .papers{counter-reset:p-counter;}
+    .papers li{counter-increment:p-counter;padding-left:2.2em;text-align:justify;}
+    .papers li::before{content:counter(p-counter)".";position:absolute;left:0;color:#000;font-weight:500;}
+    .papers li em{font-style:italic;}
+
+    /* ---------- 页脚 ---------- */
+    .foot{background:#9b0000;color:#fff;font-size:14px;padding:40px 0;}
+    .w14{max-width:1200px;margin:0 auto;padding:0 20px;}
+    .f_main{display:flex;justify-content:space-between;align-items:flex-start;}
+    .f_left p{margin:4px 0;}
+    .f_left a{color:#fff;text-decoration:none;}
+    .f_right ul{list-style:none;margin:0;padding:0;display:flex;gap:20px;}
+    .f_right .ewm img{width:100px;height:100px;object-fit:cover;border:4px solid #fff;}
+    .f_right p{text-align:center;margin-top:8px;font-size:13px;}
+
+    /* ---------- 响应式 ---------- */
+    @media(max-width:768px){
+      .m_header_box{height:80px;padding:0 15px;}
+      #logo img{height:36px;}
+      .sznr_box1{flex-direction:column;align-items:center;text-align:center;}
+      .sznr_box1 .xx>div{flex-direction:column;}
+      .sznr_box1 .xx strong{width:auto;margin-bottom:4px;}
+      .indent{text-indent:0;}
+      .list,.honor,.papers{padding-left:1em;}
+      .f_main{flex-direction:column;align-items:center;text-align:center;}
+      .f_right{margin-top:20px;}
+    }
+
+    /* ---------- 静态顶部导航 ---------- */
+.top_nav {
+  margin-left: auto;          /* 靠右 */
+  display: flex;
+  gap: 20px;                  /* 链接间距 */
+  align-items: center;
+  height: 100%;
+  position: relative;
+  z-index: 10;                /* 比背景高即可 */
+}
+
+.top_nav a {
+  color: #fff;
+  font-size: 15px;
+  text-decoration: none;
+  white-space: nowrap;
+  padding: 4px 0;
+  border-bottom: 2px solid transparent;
+  transition: border-color .3s;
+}
+
+.top_nav a:hover {
+  border-bottom: 2px solid #fff;
+}
+
+/* 手机：只保留 logo，隐藏文字 */
+@media (max-width: 768px) {
+  .top_nav {
+    display: none;
+  }
+}
+
+/* 页脚日期/访问数 */
+.top_meta {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #fff;
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;        /* 手机自动折行 */
+}
+.top_meta .visit {
+  color: #ffe600;
+}
+
+/* 手机端自动居中 */
+@media (max-width: 768px) {
+  .top_meta {
+    justify-content: center;
+  }
+}
+
+  </style>
+</head>
+
+<body>
+  <!-- ========== 顶部栏（静态文字导航） ========== -->
+<section class="m_header_box">
+  <div class="head_bg"></div>
+  <header id="m_header">
+    <div id="logo">
+      <a href="https://sam.pkusz.edu.cn/index.htm" target="_blank">
+        <img src="Galen/logo.png" alt="Logo">
+      </a>
+    </div>
+
+    <!-- 静态文字导航 -->
+    <nav class="top_nav">
+      <a href="https://sam.pkusz.edu.cn/xygk/xyjj.htm" target="_blank">学院概况</a>
+      <a href="https://sam.pkusz.edu.cn/szdw/szgk.htm" target="_blank">师资队伍</a>
+      <a href="https://sam.pkusz.edu.cn/zspy1.htm" target="_blank">招生培养</a>
+      <a href="https://sam.pkusz.edu.cn/kxyj/kydt.htm" target="_blank">科学研究</a>
+      <a href="https://sam.pkusz.edu.cn/xywh/xgdt.htm" target="_blank">学院文化</a>
+      <a href="https://sam.pkusz.edu.cn/djgz/zbdt.htm" target="_blank">党建工作</a>
+      <a href="https://sam.pkusz.edu.cn/zpxx.htm" target="_blank">招聘信息</a>
+      <a href="https://sam.pkusz.edu.cn/zlxz.htm" target="_blank">资料下载</a>
+      <a href="https://www.mse.pku.edu.cn/" target="_blank">北京本部</a>
+    </nav>
+  </header>
+</section>
+
+  <!-- 个人卡片 -->
+  <div class="ej_sznr">
+    <div class="sznr_box1">
+      <div class="img"><img src="Galen/Galen-life.jpg" alt="头像"></div>
+      <div class="con">
+        <div class="bt">高磊</div>
+        <div class="xx">
+          <div><strong>职  务：</strong><p>副研究员</p></div>
+          <div><strong>最高学历：</strong><p>博士</p></div>
+          <div><strong>研究领域：</strong><p>固态电池，中子表征技术</p></div>
+          <div><strong>邮  箱：</strong><p>gaolei2018@pku.edu.cn</p></div>
+          <div><strong>个人主页：</strong><p>https://example.com</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 个人简介等 -->
+  <div class="ej_sznr">
+    <div class="sznr_box2">
+      <div class="sec">
+        <h2>个人简介</h2>
+        <p class="indent">高磊，北京大学深圳研究生院南燕特聘副研究员。曾先后于北京大学攻读博士学位和从事博士后研究，曾获北京大学深圳研究生院接续研究学者计划支持、马尔文帕纳科科学奖、北京大学彤程博士后、教育部国家奖学金等荣誉。长期从事固态电池与中子表征技术方面的研究，已发表SCI论文40余篇，其中以第一作者/通讯作者（含共同）发表论文20余篇，包括<em>Science Advances</em>、<em>Nat. Commun.</em>、<em>Natl. Sci. Rev.</em>、<em>Angew. Chem. Int. Ed.</em>、<em>Energy Environ. Sci.</em> 等期刊；申请发明专利8项；参与编制标准1项，在国际/国内学术会议做邀请报告10余次。主持国家自然科学基金、深圳市自然科学基金、中国博士后科学基金等项目，参与深圳市材料基因组大科学装置-中子谱仪平台项目、国家重大科研仪器研制项目。担任<em>Nano-Micro Letters</em>、<em>Energy Materials and Devices</em>、<em>EcoEnergy</em>、<em>Scientific Report</em>、<em>Chin. Chem. Lett</em>等期刊编委/青年编委。</p>
+      </div>
+
+      <div class="sec">
+        <h2>工作及教育经历</h2>
+        <ul class="list">
+          <li>2024 至今， 北京大学深圳研究生院，新材料学院，南燕特聘副研究员</li>
+          <li>2022 - 2024， 北京大学，材料科学与工程学院，博士后</li>
+          <li>2018 - 2022， 北京大学，材料科学与工程学院，博士</li>
+          <li>2015 - 2018， 兰州大学，核科学与技术学院，硕士</li>
+          <li>2012 - 2015， 西安重工装备制造集团，研发工程师</li>
+          <li>2008 - 2012， 中国矿业大学，机电工程学院，本科</li>
+        </ul>
+      </div>
+
+      <div class="sec">
+        <h2>科研项目</h2>
+        <ol class="list">
+          <li>2025，深圳市自然科学基金面上项目，主持</li>
+          <li>2025，深圳市固态电池研发重点实验室开放课题，主持</li>
+          <li>2024，国家自然科学基金青年基金项目（C类），主持</li>
+          <li>2023，中国博士后科学基金面上项目（已结题），主持</li>
+          <li>2022，国家重大科研仪器研制项目，参与</li>
+        </ol>
+      </div>
+
+      <div class="sec">
+        <h2>奖项荣誉</h2>
+        <ul class="list">
+          <li>2025， Best Presentation Award，3rd International Conference on Energy Chemistry</li>
+          <li>2024， Winner of the Malvern Panalytical Scientific Award</li>
+          <li>2024，北京大学深圳研究生院，接续研究学者计划</li>
+          <li>2022， 北京大学，材料科学与工程学院，彤程博士后</li>
+          <li>2022， 北京大学三好学生标兵</li>
+          <li>2021， 教育部博士国家奖学金</li>
+          <li>2018， 兰州大学优秀毕业生</li>
+          <li>2017， 教育部硕士国家奖学金</li>
+        </ul>
+      </div>
+
+      <div class="sec">
+        <h2>代表性论文（*代表通讯作者，#代表共同第一作者）</h2>
+        <ol class="papers">
+        <li>Hong, B.#; <strong>Gao, L.#*;</strong> Li, C.; Lai, G.; Zhu, J.*; Huang, D.; Zuo, Y.; Yin, W.; Sun, M.; Zhao, S.; Zheng, J.; Han, S.*; Zou R.* All-solid-state batteries designed for operation under extreme cold conditions. <em><strong>Nature Communications.</strong></em> 2025, 16, 143.</li>
+        <li>Di, L.; Huang, Z.; <strong>Gao, L.*;</strong> Zuo, Y.*; Zhu, J.; Sun, M.; Zhao, S.; Zheng, J.; Han, S.*; Zou, R.*, Dynamic control of lithium dendrite growth with sequential guiding and limiting in all-solid-state batteries. <em><strong>Science Advances.</strong></em> 2025, 11 (34), eadw9590.</li>
+        <li>Hong, B.; <strong>Gao, L.*;</strong> Zhang, B.; Nan, P.; Zhang, R.; Li, Y.; Lei, Z.; Liu, M.; Wu, J.; Di, L.; Ni, H.; Han, S.*; Zhu, J.*, Nitrogen-triggered amorphization enables high-performance solid-state electrolytes. <em><strong>Energy & Environmental Science.</strong></em> 2025. DOI: 10.1039/D5EE05943G.</li>
+        <li>Ni, H.; <strong>Gao, L.*; </strong>Zhu, J.; Huang, D.; Yin, W.; Zou, R.; Li, C.; Han, S.*, Exploring Ionic Transport Mechanisms in Solid Conductors: A Dual Perspective on Static Structural Properties and Anion Dynamics. <em><strong>Chemistry of Materials.</strong></em> 2025, 37 (1), 278-289.</li>
+        <li>Hong, B.; <strong>Gao, L.*;</strong> Nan, P.; Li, Y.; Liu, M.; Zou, R.; Gu, J.; Xu, Q.; Zhu, J.*; Han, S.*, Novel Amorphous Nitride-Halide Solid Electrolytes with Enhanced Performance for All-Solid-State Batteries. <em><strong>Angewandte Chemie International Edition.</strong></em> 2025, 64, e202415847.</li>
+        <li><strong>Gao, L.*;</strong> Zhang, Z.; Zhang, Z.; Luo, Y.; Hong, B.; Di, L.; Ni, H.; Zhu, J.; Zou, R.; Zhao, E.*; Han, S.*, Lithium-Deficient Halide Solid-State Electrolytes with Enhanced Electrochemical Performance for All-Solid-State Batteries. <em><strong>Advanced Functional Materials.</strong></em> 2025, e19648.</li>
+        <li><strong>Gao, L.#;</strong> Song, M.#; Zhao, R.; Han, S.; Zhu, J.; Xia, W.; Bian, J.; Wang, L.; Gao, S.; Wang, Y.; Zou, R.*; Zhao, Y.*, Effects of fluorination on crystal structure and electrochemical performance of antiperovskite solid electrolytes. <em><strong>Journal of Energy Chemistry.</strong></em> 2023, 77, 521-528.</li>
+        <li><strong>Gao, L.;</strong> Zhang, X.; Zhu, J.; Han, S.*; Zhang, H.; Wang, L.; Zhao, R.; Li, S.; Wang, Y.; Huang, D.; Zhao, Y.; Zou, R.*, Boosting lithium ion conductivity of antiperovskite solid electrolyte by potassium ions substitution for cation clusters. <em><strong>Nature Communications.</strong></em> 2023, 14 (1), 6807.</li>
+        <li><strong>Gao, L.;</strong> Han, S.*; Ni, H.; Zhu, J.; Wang, L.; Gao, S.; Wang, Y.; Huang, D.; Zhao, Y.; Zou, R.*, Application of neutron imaging in observing various states of matter inside lithium batteries. <em><strong>National Science Review.</strong></em>  2023, 10 (11), nwad238.</li>
+        <li>Zhao, R.#*; <strong> Gao, L.#;</strong> Song, M.; Ye, Y.; Liang, Z.; Bian, J.; Zhu, J.; Li, S.; Zou, R.*; Zhao, Y.*, Stabilization of NASICON-Type Electrolyte against Li Anode via an Ionic Conductive MOF-Incorporated Adhesive Interlayer. <em><strong>ACS Energy Letter. </strong></em>2021, 6 (9), 3141-3150.</li>
+      </ol>
+      </div>
+    </div>
+  </div>
+
+<!-- 页脚 -->
+<div class="foot">
+  <div class="w14">
+    <div class="f_main">
+      <div class="f_left">
+        <div class="con">
+          <p>深圳市南山区桃园街道南山智园二期 D2 栋 4 楼 409 室</p>
+          <p></p>
+
+          <!-- 新增：日期 + 访问数 -->
+          <div class="top_meta">
+            <span class="date" id="topDate"></span>
+            <span class="visit">累计访问：<span id="visitCount"></span></span>
+          </div>
+        </div>
+      </div>
+      <div class="f_right">
+        <ul>
+          <li>
+            <div class="ewm"><img src="Galen/foot_ewm.jpg" alt="学院官方微信"></div>
+            <p>学院官方微信</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <script>
+    /* 导航开关 */
+    const navBtn = document.querySelector('.m_nav_btn');
+    const nav = document.querySelector('.m_nav');
+    const closeBtn = document.querySelector('.m_nav .close');
+    navBtn.addEventListener('click', () => nav.classList.add('open'));
+    closeBtn.addEventListener('click', () => nav.classList.remove('open'));
+
+    /* 子菜单折叠 */
+    document.querySelectorAll('.m_nav_list .title').forEach(t => {
+      t.addEventListener('click', function (e) {
+        const list = this.querySelector('.list');
+        if (!list) return;               // 无子菜单直接跳转
+        e.preventDefault();
+        this.classList.toggle('active');
+      });
+    });
+  </script>
+
+  <script>
+  /* 左侧日期 */
+  function setDate() {
+    const now = new Date();
+    const week = ['日', '一', '二', '三', '四', '五', '六'];
+    const str = `${now.getFullYear()}年${now.getMonth() + 1}月${now.getDate()}日 星期${week[now.getDay()]}`;
+    document.getElementById('topDate').textContent = str;
+  }
+  setDate();
+  setInterval(setDate, 60000); // 每分钟更新
+
+  /* 右侧访问计数（简单版：刷新即 +1） */
+  const key = 'pku-mse-visit';
+  let count = localStorage.getItem(key) || 0;
+  count = Number(count) + 1;
+  localStorage.setItem(key, count);
+  document.getElementById('visitCount').textContent = count;
+</script>
+
+</body>
+</html>
